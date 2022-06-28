@@ -44,3 +44,11 @@ class Request {
     });
   }
 }
+
+class Contact {
+  Contact(
+      {required this.contactName,
+      required this.contactNumber,
+      required this.relationWithMissed});
+  String contactName, relationWithMissed, contactNumber;
+}

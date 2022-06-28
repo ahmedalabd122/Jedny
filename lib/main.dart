@@ -30,22 +30,6 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/home',
       onGenerateRoute: RouteGenerator.generateRoute,
-      /* initialRoute: '/home',
-      routes: {
-        '/home': (context) => HomePage(),
-        '/splash': (context) => Splash(),
-        '/missed_form': (context) => MissedForm(
-              missed_image: Image.asset(
-                "img/Layer-1.png",
-                height: 200,
-              ),
-            ),
-        '/missed_contact': (context) => MissedContact(),
-        '/success': (context) => SuccessPage(),
-        '/img_picker': (context) => ImagePickerScreen(),
-        '/found_form': (context) => FoundForm(),
-        '/found_contcat': (context) => FoundContact(),
-      }, */
     );
   }
 }
