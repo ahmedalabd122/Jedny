@@ -1,33 +1,72 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:jedny/models/contactModel.dart';
+import 'package:jedny/models/missedPersonModel.dart';
 import '../widgets/jedny_textfield.dart';
 import 'img_picker.dart';
 import 'dart:io';
 import 'request.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import '../widgets/datePicker.dart';
 
 class MissedForm extends StatefulWidget {
   MissedForm({Key? key, required this.missed_image}) : super(key: key);
-  String missed_image;
+  XFile missed_image;
   @override
   State<MissedForm> createState() => _MissedFormState();
 }
 
 class _MissedFormState extends State<MissedForm> {
   final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<FormState>();
+  late String name;
+  late String age;
+  late String location;
+  late String physicalStatus;
+  late String mentalStatus;
+  late XFile image;
+  //late Contact contact;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController phyiscalController = TextEditingController();
+  TextEditingController mentalController = TextEditingController();
+  late MissedPerson missedPerson;
+  _register() {
+    missedPerson = MissedPerson(
+      date: DateTime.now().toString(),
+      image: widget.missed_image,
+      name: nameController.text,
+      age: ageController.text,
+      location: locationController.text,
+      physicalState: phyiscalController.text,
+      mentalState: mentalController.text,
+      contact: Contact(),
+    );
+  }
+
+  // Future _selectDate() async {
+  //   DateTime? picked = await showDatePicker(
+  //       context: context,
+  //       initialDate: new DateTime.now(),
+  //       firstDate: new DateTime(2016),
+  //       lastDate: new DateTime(2019));
+  //   if (picked != null) setState(() => _value = picked.toString());
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(
-          leading: Container(),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.arrow_forward, color: Colors.white),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
           title: Transform(
             transform: Matrix4.translationValues(0.0, 0.0, 0.0),
             child: const Text(
@@ -40,8 +79,9 @@ class _MissedFormState extends State<MissedForm> {
           key: formKey,
           child: ListView(
             children: [
-              Image.file(File(widget.missed_image)),
+              Image.file(File(widget.missed_image.path)),
               JednyTextField(
+                controller: nameController,
                 hint_value: 'اسم الشخص المفقود',
                 icon: const Icon(
                   Icons.person,
@@ -50,6 +90,7 @@ class _MissedFormState extends State<MissedForm> {
                 ),
               ),
               JednyTextField(
+                controller: ageController,
                 hint_value: 'السن عندما فقد',
                 icon: const Icon(
                   Icons.date_range,
@@ -57,7 +98,9 @@ class _MissedFormState extends State<MissedForm> {
                   color: Colors.black54,
                 ),
               ),
+              JednyDatePicker(),
               JednyTextField(
+                controller: locationController,
                 hint_value: 'مكان الفقد',
                 icon: const Icon(
                   Icons.place,
@@ -66,14 +109,7 @@ class _MissedFormState extends State<MissedForm> {
                 ),
               ),
               JednyTextField(
-                hint_value: 'تاريخ الفقد',
-                icon: const Icon(
-                  Icons.calendar_today_outlined,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              JednyTextField(
+                controller: phyiscalController,
                 hint_value: 'الحالة البدنية',
                 icon: const Icon(
                   Icons.boy_sharp,
@@ -82,7 +118,8 @@ class _MissedFormState extends State<MissedForm> {
                 ),
               ),
               JednyTextField(
-                hint_value: 'اسم الشخص المفقود',
+                controller: mentalController,
+                hint_value: 'الحالة الذهنية',
                 icon: const Icon(
                   Icons.psychology_rounded,
                   size: 36.0,
@@ -102,17 +139,15 @@ class _MissedFormState extends State<MissedForm> {
                         const SnackBar(content: Text('Processing Data')),
                       );
                     } */
-                    setState(() {
+                    if (formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                      _register();
                       //_image = File(_xFile!.path);
-                      Request().makeCheckIn(
-                          name: 'ahmed alabd',
-                          age: '23',
-                          location: 'tanta',
-                          physicalStatus: 'tired boss',
-                          mentalStatus: 'mad',
-                          image: XFile("${widget.missed_image}"));
-                      Navigator.pushNamed(context, '/missed_contact');
-                    });
+                      Navigator.pushNamed(context, '/missed_contact',
+                          arguments: missedPerson);
+                    }
                   },
                 ),
               ),
@@ -121,3 +156,41 @@ class _MissedFormState extends State<MissedForm> {
         ));
   }
 }
+/*
+Request().makeCheckIn(
+                        name: 'ahmed alabd',
+                        age: '23',
+                        location: 'tanta',
+                        physicalStatus: 'tired boss',
+                        mentalStatus: 'mad',
+                        image: XFile("${widget.missed_image}"),
+                      );
+*/
+
+/**
+ * TextFormField(
+    decoration: new InputDecoration(hintText: 'DOB'),
+    maxLength: 10,
+    validator: validateDob,
+    onSaved: (String val) {
+        strDob = val;
+    },
+    onTap: (){
+        // Below line stops keyboard from appearing
+        FocusScope.of(context).requestFocus(new FocusNode());
+
+        // Show Date Picker Here
+
+      },
+),
+
+Future _selectDate() async {
+    DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2016),
+        lastDate: new DateTime(2019)
+    );
+    if(picked != null) setState(() => _value = picked.toString());
+}
+ */

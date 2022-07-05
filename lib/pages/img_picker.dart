@@ -37,17 +37,10 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
                   if (_xFile != null) {
                     setState(() {
                       //_image = File(_xFile!.path);
-                      Request().makeCheckIn(
-                          name: 'ahmed alabd',
-                          age: '23',
-                          location: 'tanta',
-                          physicalStatus: 'tired boss',
-                          mentalStatus: 'mad',
-                          image: XFile("${_xFile?.path}"));
                     });
                   }
                 },
-                child: Text('pick'),
+                child: const Text('pick'),
               ),
             )
           ],
@@ -69,3 +62,12 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
 // },
 // child: Text('asdasd'),
 // ),
+/**
+ *   Request().makeCheckIn(
+                          name: 'ahmed alabd',
+                          age: '23',
+                          location: 'tanta',
+                          physicalStatus: 'tired boss',
+                          mentalStatus: 'mad',
+                          image: XFile("${_xFile?.path}"));
+ */

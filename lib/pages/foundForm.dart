@@ -1,17 +1,41 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:jedny/models/contactModel.dart';
+import 'package:jedny/models/missedPersonModel.dart';
 import '../widgets/jedny_textfield.dart';
 import 'img_picker.dart';
 
 class FoundForm extends StatefulWidget {
-  const FoundForm({Key? key}) : super(key: key);
-
+  FoundForm({Key? key, required this.found_image}) : super(key: key);
+  XFile found_image;
   @override
   State<FoundForm> createState() => _FoundFormState();
 }
 
 class _FoundFormState extends State<FoundForm> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController phyiscalController = TextEditingController();
+  TextEditingController mentalController = TextEditingController();
+  late MissedPerson missedPerson;
+
+  late XFile image = widget.found_image;
+  _register() {
+    missedPerson = MissedPerson(
+      contact: Contact(),
+      date: DateTime.now().toString(),
+      image: widget.found_image,
+      name: nameController.text,
+      age: ageController.text,
+      location: locationController.text,
+      physicalState: phyiscalController.text,
+      mentalState: mentalController.text,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +65,7 @@ class _FoundFormState extends State<FoundForm> {
                 height: 200,
               ),
               JednyTextField(
+                controller: nameController,
                 hint_value: 'اسم الشخص المفقود',
                 icon: const Icon(
                   Icons.person,
@@ -49,6 +74,7 @@ class _FoundFormState extends State<FoundForm> {
                 ),
               ),
               JednyTextField(
+                controller: ageController,
                 hint_value: 'السن عندما فقد',
                 icon: const Icon(
                   Icons.date_range,
@@ -57,6 +83,7 @@ class _FoundFormState extends State<FoundForm> {
                 ),
               ),
               JednyTextField(
+                controller: locationController,
                 hint_value: 'مكان الفقد',
                 icon: const Icon(
                   Icons.place,
@@ -65,6 +92,7 @@ class _FoundFormState extends State<FoundForm> {
                 ),
               ),
               JednyTextField(
+                controller: dateController,
                 hint_value: 'تاريخ الفقد',
                 icon: const Icon(
                   Icons.calendar_today_outlined,
@@ -73,6 +101,7 @@ class _FoundFormState extends State<FoundForm> {
                 ),
               ),
               JednyTextField(
+                controller: phyiscalController,
                 hint_value: 'الحالة البدنية',
                 icon: const Icon(
                   Icons.boy_sharp,
@@ -81,7 +110,8 @@ class _FoundFormState extends State<FoundForm> {
                 ),
               ),
               JednyTextField(
-                hint_value: 'اسم الشخص المفقود',
+                controller: mentalController,
+                hint_value: 'الحالة الذهنية',
                 icon: const Icon(
                   Icons.psychology_rounded,
                   size: 36.0,

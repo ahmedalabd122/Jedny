@@ -10,6 +10,8 @@ class FoundContact extends StatefulWidget {
 
 class _FoundContactState extends State<FoundContact> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController contactNameController = TextEditingController();
+  TextEditingController contactNumberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +59,7 @@ class _FoundContactState extends State<FoundContact> {
               ],
             ),
             JednyTextField(
+              controller: contactNameController,
               hint_value: 'الاسم',
               icon: const Icon(
                 Icons.person,
@@ -65,17 +68,10 @@ class _FoundContactState extends State<FoundContact> {
               ),
             ),
             JednyTextField(
+              controller: contactNameController,
               hint_value: 'رقم الهاتف',
               icon: const Icon(
                 Icons.phone,
-                size: 36.0,
-                color: Colors.black54,
-              ),
-            ),
-            JednyTextField(
-              hint_value: 'العلاقة بالشخص المفقود',
-              icon: const Icon(
-                Icons.people,
                 size: 36.0,
                 color: Colors.black54,
               ),
@@ -93,6 +89,8 @@ class _FoundContactState extends State<FoundContact> {
                       const SnackBar(content: Text('Processing Data')),
                     );
                   }
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/success', (Route<dynamic> route) => false);
                 },
               ),
             ),

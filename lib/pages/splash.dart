@@ -40,92 +40,84 @@ class _SplashState extends State<Splash> {
             itemCount: images.length,
             controller: _controller,
             onPageChanged: _onChanged,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return Container(
-                //width: double.maxFinite,
-                //height: double.maxFinite,
-                // decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //   image: AssetImage("img/" + images[index]),
-                // )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Image(
-                          image: AssetImage("img/" + images[index]),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Image(
+                        image: AssetImage("img/" + images[index]),
+                      ),
+                      Text(
+                        headLines[index],
+                        style: const TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueAccent,
                         ),
-                        Text(
-                          headLines[index],
-                          style: const TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
+                      ),
+                      Container(
+                        width: 260,
+                        child: Text(
+                          details[index],
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
                           ),
+                          textAlign: TextAlign.center,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (index == 2)
                         Container(
-                          width: 260,
-                          child: Text(
-                            details[index],
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        if (index == 2)
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.blue),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: const TextStyle(
-                                  fontFamily: 'NotoKufiArabic',
-                                  backgroundColor: Colors.blue,
-                                ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.blue),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: const TextStyle(
+                                fontFamily: 'NotoKufiArabic',
+                                backgroundColor: Colors.blue,
                               ),
-                              onPressed: () async {
-                                await ImagePicker()
-                                    .pickImage(source: ImageSource.gallery)
-                                    .then((value) {
-                                  _xFile = value;
+                            ),
+                            onPressed: () async {
+                              await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery)
+                                  .then((value) {
+                                _xFile = value;
+                              });
+                              print(_xFile?.path);
+                              if (_xFile != null) {
+                                setState(() {
+                                  //_image = File(_xFile!.path);
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/missed_form',
+                                    arguments: _xFile,
+                                  );
                                 });
-                                print(_xFile?.path);
-                                if (_xFile != null) {
-                                  setState(() {
-                                    //_image = File(_xFile!.path);
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/missed_form',
-                                      arguments: _xFile?.path,
-                                    );
-                                  });
-                                }
-                              },
-                              child: const Text(
-                                'ابدأ بإضافة صورة الشخص المفقود',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'NotoKufiArabic',
-                                  color: Colors.white,
-                                ),
+                              }
+                            },
+                            child: const Text(
+                              'ابدأ بإضافة صورة الشخص المفقود',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'NotoKufiArabic',
+                                color: Colors.white,
                               ),
                             ),
-                          )
-                        else
-                          Container()
-                      ],
-                    ),
-                  ],
-                ),
+                          ),
+                        )
+                      else
+                        Container()
+                    ],
+                  ),
+                ],
               );
             },
           ),
