@@ -8,21 +8,21 @@ import 'package:jedny/models/contactModel.dart';
 
 class MissedPerson {
   final String name;
-  final String age;
+  final int age;
   final String location;
   String date;
   final String physicalState;
   final String mentalState;
   final XFile image;
-  Contact contact;
+  Contact? contact;
   MissedPerson({
     this.name = 'ahmed',
-    this.age = '23',
+    this.age = 23,
     this.location = 'Tanta',
      this.date='',
     this.physicalState = 'good',
     this.mentalState = 'good',
     required this.image,
-     required this.contact,
+     this.contact,
   });
 }

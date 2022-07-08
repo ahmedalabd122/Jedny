@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jedny/models/matchedModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
-import 'package:jedny/pages/foundForm.dart';
-import 'package:jedny/pages/found_contacts.dart';
+import 'package:jedny/pages/foundPages/foundForm.dart';
+import 'package:jedny/pages/foundPages/foundSplash.dart';
+import 'package:jedny/pages/foundPages/found_contacts.dart';
 import 'package:jedny/pages/home_page.dart';
 import 'package:jedny/pages/img_picker.dart';
-import 'package:jedny/pages/matched.dart';
-import 'package:jedny/pages/missedForm.dart';
-import 'package:jedny/pages/missed_contacts.dart';
-import 'package:jedny/pages/splash.dart';
+import 'package:jedny/pages/missedPages/missedForm.dart';
+import 'package:jedny/pages/missedPages/missed_contacts.dart';
+import 'package:jedny/pages/missedPages/splash.dart';
 import 'package:jedny/pages/success_page.dart';
-import 'main.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -20,8 +19,11 @@ class RouteGenerator {
     switch (settings.name) {
       case '/home':
         return MaterialPageRoute(builder: (_) => HomePage());
+
+      case '/found_splash':
+        return MaterialPageRoute(builder: (_) => FoundSplash());
       case '/splash':
-        return MaterialPageRoute(builder: (_) => Splash());
+        return MaterialPageRoute(builder: (_) => MissedSplash());
       case '/missed_contact':
         if (args is MissedPerson) {
           return MaterialPageRoute(

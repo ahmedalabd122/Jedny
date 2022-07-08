@@ -1,18 +1,16 @@
 import 'dart:ui';
-import 'request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:jedny/pages/missedForm.dart';
 import 'dart:io';
 
-class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
+class FoundSplash extends StatefulWidget {
+  const FoundSplash({Key? key}) : super(key: key);
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<FoundSplash> createState() => _FoundSplashState();
 }
 
-class _SplashState extends State<Splash> {
+class _FoundSplashState extends State<FoundSplash> {
   File? _image;
   XFile? _xFile;
   final _picker = ImagePicker();
@@ -42,6 +40,7 @@ class _SplashState extends State<Splash> {
             onPageChanged: _onChanged,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
+              _currentPage = index;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -143,8 +142,17 @@ class _SplashState extends State<Splash> {
               ),
             ),
             Row(
-              children: List.generate(3, (index) {
-                return Container();
+              children: List.generate(3, (indexSlider) {
+                return Container(
+                    margin: const EdgeInsets.only(right: 1),
+                    width: indexSlider == _currentPage ? 25 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: indexSlider == _currentPage
+                          ? const Color(0xff1BD483)
+                          : const Color(0xff1BD483).withOpacity(0.3),
+                    ));
               }),
             ),
             Container(

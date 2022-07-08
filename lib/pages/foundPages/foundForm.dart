@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jedny/models/contactModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
-import '../widgets/jedny_textfield.dart';
-import 'img_picker.dart';
+import 'package:jedny/widgets/jedny_textfield.dart';
 
 class FoundForm extends StatefulWidget {
   FoundForm({Key? key, required this.found_image}) : super(key: key);
@@ -30,7 +29,7 @@ class _FoundFormState extends State<FoundForm> {
       date: DateTime.now().toString(),
       image: widget.found_image,
       name: nameController.text,
-      age: ageController.text,
+      age: int.parse(ageController.text),
       location: locationController.text,
       physicalState: phyiscalController.text,
       mentalState: mentalController.text,

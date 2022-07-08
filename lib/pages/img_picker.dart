@@ -20,31 +20,29 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: TextButton(
-                onPressed: () async {
-                  await ImagePicker()
-                      .pickImage(source: ImageSource.gallery)
-                      .then((value) {
-                    _xFile = value;
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: TextButton(
+              onPressed: () async {
+                await ImagePicker()
+                    .pickImage(source: ImageSource.gallery)
+                    .then((value) {
+                  _xFile = value;
+                });
+                print(_xFile?.path);
+                if (_xFile != null) {
+                  setState(() {
+                    //_image = File(_xFile!.path);
                   });
-                  print(_xFile?.path);
-                  if (_xFile != null) {
-                    setState(() {
-                      //_image = File(_xFile!.path);
-                    });
-                  }
-                },
-                child: const Text('pick'),
-              ),
-            )
-          ],
-        ),
+                }
+              },
+              child: const Text('pick'),
+            ),
+          )
+        ],
       ),
     );
   }

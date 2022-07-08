@@ -45,6 +45,7 @@ dependencies:
   flutter_branch_sdk: ^5.1.1
   syncfusion_flutter_datepicker: ^20.2.36
   intl: ^0.17.0
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

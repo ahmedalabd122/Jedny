@@ -5,14 +5,15 @@ import 'package:jedny/widgets/jedny_textfield.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class JednyDatePicker extends StatefulWidget {
-  JednyDatePicker({Key? key}) : super(key: key);
+  JednyDatePicker({Key? key,required this.dateController}) : super(key: key);
+    TextEditingController dateController;
+
 
   @override
   State<JednyDatePicker> createState() => _JednyDatePickerState();
 }
 
 class _JednyDatePickerState extends State<JednyDatePicker> {
-  TextEditingController dateController = TextEditingController();
 
   String selectedDate = '';
   String _dateCount = '';
@@ -58,7 +59,7 @@ class _JednyDatePickerState extends State<JednyDatePicker> {
     if (picked != null)
       setState(() => {
             //data.registrationdate = picked.toString(),
-            dateController.text = DateFormat('yyyy-MM-dd').format(picked)
+            widget.dateController.text = DateFormat('yyyy-MM-dd').format(picked)
           });
   }
 
@@ -77,7 +78,7 @@ class _JednyDatePickerState extends State<JednyDatePicker> {
             keyboardType: TextInputType.phone,
             autocorrect: false,
             textAlign: TextAlign.end,
-            controller: dateController,
+            controller: widget.dateController,
             onSaved: (value) {
               //data.registrationdate = value;
             },

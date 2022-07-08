@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jedny/models/matchedModel.dart';
-import 'package:jedny/pages/foundForm.dart';
-import 'package:jedny/pages/found_contacts.dart';
-import 'package:jedny/pages/missedForm.dart';
-import 'package:jedny/pages/missed_contacts.dart';
-import 'package:jedny/pages/splash.dart';
+import 'package:jedny/pages/foundPages/found_contacts.dart';
 import 'package:jedny/route_generator.dart';
 import 'package:jedny/services/dynamicLinkService.dart';
-import 'pages/missedForm.dart';
+import 'package:jedny/theme.dart';
 import 'pages/img_picker.dart';
-import 'pages/missed_contacts.dart';
 import 'pages/home_page.dart';
 import 'pages/success_page.dart';
 import 'route_generator.dart';
@@ -32,10 +27,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Jedny',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'NotoKufiArabic',
-      ),
+      theme: mainTheme,
       initialRoute: '/home',
       onGenerateRoute: RouteGenerator.generateRoute,
     );

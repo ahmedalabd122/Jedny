@@ -2,13 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:jedny/models/contactModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
-import '../widgets/jedny_textfield.dart';
-import 'img_picker.dart';
 import 'dart:io';
-import 'request.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jedny/widgets/datePicker.dart';
+import 'package:jedny/widgets/jedny_textfield.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import '../widgets/datePicker.dart';
 
 class MissedForm extends StatefulWidget {
   MissedForm({Key? key, required this.missed_image}) : super(key: key);
@@ -20,13 +18,7 @@ class MissedForm extends StatefulWidget {
 class _MissedFormState extends State<MissedForm> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<FormState>();
-  late String name;
-  late String age;
-  late String location;
-  late String physicalStatus;
-  late String mentalStatus;
-  late XFile image;
-  //late Contact contact;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController locationController = TextEditingController();
@@ -36,14 +28,18 @@ class _MissedFormState extends State<MissedForm> {
   late MissedPerson missedPerson;
   _register() {
     missedPerson = MissedPerson(
-      date: DateTime.now().toString(),
+      date: dateController.text,
       image: widget.missed_image,
       name: nameController.text,
-      age: ageController.text,
+      age: int.parse(ageController.text),
       location: locationController.text,
       physicalState: phyiscalController.text,
       mentalState: mentalController.text,
-      contact: Contact(),
+      contact: Contact(
+        name: "ahmed",
+        phone: "0112619596464",
+        relationship: 'uncle',
+      ),
     );
   }
 
@@ -98,7 +94,7 @@ class _MissedFormState extends State<MissedForm> {
                   color: Colors.black54,
                 ),
               ),
-              JednyDatePicker(),
+              JednyDatePicker(dateController: dateController),
               JednyTextField(
                 controller: locationController,
                 hint_value: 'مكان الفقد',

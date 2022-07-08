@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jedny/models/contactModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
 import 'package:jedny/pages/request.dart';
-import '../widgets/jedny_textfield.dart';
+import 'package:jedny/widgets/jedny_textfield.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:io' as Io;
+import 'package:path_provider/path_provider.dart';
 
 class MissedContact extends StatefulWidget {
   MissedContact({Key? key, required this.missedPerson}) : super(key: key);
@@ -17,32 +20,36 @@ class MissedContact extends StatefulWidget {
 
 class _MissedContactState extends State<MissedContact> {
   final formKey = GlobalKey<FormState>();
-
+  late bool accepted;
+  late String response;
   TextEditingController contactNameController = TextEditingController();
   TextEditingController contactNumberController = TextEditingController();
   TextEditingController contactRelationController = TextEditingController();
-  _register() async {
-    widget.missedPerson.contact.name = contactNameController.text;
-    widget.missedPerson.contact.phone = contactNumberController.text;
-    widget.missedPerson.contact.relationship = contactRelationController.text;
-    print(widget.missedPerson.contact.name);
-    print(widget.missedPerson.contact.phone);
-    print(widget.missedPerson.contact.relationship);
+  register() async {
+    widget.missedPerson.contact?.name = contactNameController.text;
+    widget.missedPerson.contact?.phone = contactNumberController.text;
+    widget.missedPerson.contact?.relationship = contactRelationController.text;
 
     Io.File imageFile = Io.File(widget.missedPerson.image.path);
-    Uint8List imagebytes = await imageFile.readAsBytes();
-    String base64Encode = base64.encode(imagebytes);
+    Uint8List imagebytes = await widget.missedPerson.image.readAsBytes();
+    String base64Encode =
+        Uri.dataFromBytes(imagebytes, mimeType: 'image/jpeg').toString();
 
-    Request().makeCheckIn(
+    Request request = Request();
+    await request.makeCheckIn(
       name: widget.missedPerson.name,
       age: widget.missedPerson.age,
       location: widget.missedPerson.location,
       physicalStatus: widget.missedPerson.physicalState,
       mentalStatus: widget.missedPerson.mentalState,
       image: base64Encode,
-      contact: widget.missedPerson.contact,
+      contact: widget.missedPerson.contact!,
       date: widget.missedPerson.date,
     );
+    accepted = request.accepted;
+    if (accepted == false) {
+      response = request.errorResponse.toString();
+    }
   }
 
   @override
@@ -119,6 +126,7 @@ class _MissedContactState extends State<MissedContact> {
                 color: Colors.black54,
               ),
             ),
+            Text('${base64Encode}'),
             Container(
               height: 50,
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -126,22 +134,22 @@ class _MissedContactState extends State<MissedContact> {
                 child: const Text('تأكيد البلاغ'),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    _register();
-
-                    // If the form is valid, display a snackbar. In the real world,
-                    // you'd often call a server or save the information in a database.
-                    setState(() {
-                      //_image = File(_xFile!.path);
-                      //Navigator.pushNamed(context, '/missed_contact');
+                    setState(() async {
+                      await register();
+                      if (accepted) {
+                        Navigator.popAndPushNamed(context, '/success');
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/success', (Route<dynamic> route) => false);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(
+                            'Error:  $response',
+                          )),
+                        );
+                      }
                     });
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
                   }
-                  //Navigator.popAndPushNamed(context, '/success');
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/success', (Route<dynamic> route) => false);
                 },
               ),
             ),
@@ -151,14 +159,3 @@ class _MissedContactState extends State<MissedContact> {
     );
   }
 }
-/**
- * Request().makeCheckIn(
-                          name: 'ahmed alabd',
-                          age: '23',
-                          location: 'tanta',
-                          physicalStatus: 'tired boss',
-                          mentalStatus: 'mad',
-                          image: XFile("${widget.missed_image}"),
-                          contact: );
- * 
- */

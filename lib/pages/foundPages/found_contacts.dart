@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/jedny_textfield.dart';
+import '../../widgets/jedny_textfield.dart';
 
 class FoundContact extends StatefulWidget {
   const FoundContact({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _FoundContactState extends State<FoundContact> {
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   width: 300,
-                  child: Text(
+                  child: const Text(
                     'نقوم باعلامك عبر اشعارات التطبيق وعبر رقم الهاتف الذي تدخله عند وجود أي معلومات أو تحديثات جديدة عن الشخص المفقود',
                     style: TextStyle(
                       fontSize: 16,
