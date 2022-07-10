@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,55 +9,47 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:jedny/models/contactModel.dart';
+import 'package:jedny/models/foundPersonModel.dart';
 import '../models/missedPersonModel.dart';
 import '../models/contactModel.dart';
 
 class Request {
-  String foundUrl = "https://gednie.herokuapp.com/found";
-  String missedUrl = "https://gednie.herokuapp.com/missed";
+  Request({required this.missed});
   bool missed = true;
   bool accepted = false;
   dynamic errorResponse;
   Future makeCheckIn({
-    required String name,
-    required int age,
-    required String location,
-    required String date,
-    required String physicalStatus,
-    required String mentalStatus,
-    required String image,
-    required Contact contact,
+    required dynamic person,
   }) async {
     final Dio dio = Dio();
     late Map<String, dynamic> jsonData;
     if (missed) {
       jsonData = {
-        "name": name,
-        "age": age,
-        "location": location,
-        "date": date,
-        "physicalStatus": physicalStatus,
-        "mentalStatus": mentalStatus,
-        "photo": image,
+        "name": person.name,
+        "age": person.age,
+        "location": person.location,
+        "date": person.date,
+        "physicalStatus": person.physicalStatus,
+        "mentalStatus": person.mentalStatus,
+        "photo": person.image,
         "contactInfo": {
-          "name": contact.name,
-          "phone": contact.phone,
-          "relationship": contact.relationship
+          "name": person.contact.name,
+          "phone": person.contact.phone,
+          "relationship": person.contact.relationship
         }
       };
     } else {
       jsonData = {
-        "name": name,
-        "age": age,
-        "location": location,
-        "date": date,
-        "physicalStatus": physicalStatus,
-        "mentalStatus": mentalStatus,
-        "photo": image,
+        "name": person.name,
+        "age": person.age,
+        "location": person.location,
+        "date": person.date,
+        "physicalStatus": person.physicalStatus,
+        "mentalStatus": person.mentalStatus,
+        "photo": person.image,
         "contactInfo": {
-          "name": contact.name,
-          "phone": contact.phone,
-          "relationship": contact.relationship
+          "name": person.contact.name,
+          "phone": person.contact.phone,
         }
       };
     }
@@ -118,12 +111,3 @@ class Request {
     }
   }
 }
-    //print(formData.fields);
-
-    // await dio
-    //     .post("https://gednie.herokuapp.com/missed", data: jsonData)
-    //     .then((value) {
-    //   log(value.toString());
-    // }).onError((error, stackTrace) {
-    //   log(error.toString());
-    // });

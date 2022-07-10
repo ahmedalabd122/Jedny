@@ -20,18 +20,18 @@ class _SuccessPageState extends State<SuccessPage> {
         children: [
           Column(
             children: [
-              Image(
+              const Image(
                 image: AssetImage("img/Success.png"),
               ),
-              Text(
+              const Text(
                 'تم إضافة البلاغ بنجاح',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue,
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 400,
                 child: Text(
                   'سنقوم باعلامك فور توفر أي معلومات جديدة، نرجوا أن يلتأم الشمل في أقرب ما يمكن.',
@@ -51,8 +51,8 @@ class _SuccessPageState extends State<SuccessPage> {
                   padding: const EdgeInsets.all(15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
+                    children: const [
+                      Text(
                         'العودة إلى الرئيسية',
                         style: TextStyle(
                           fontSize: 14.0,
@@ -71,8 +71,8 @@ class _SuccessPageState extends State<SuccessPage> {
                   ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
-                  color: Color.fromARGB(55, 30, 136, 229),
-                  textColor: Color.fromARGB(255, 255, 255, 255),
+                  color: const Color.fromARGB(55, 30, 136, 229),
+                  textColor: const Color.fromARGB(255, 255, 255, 255),
                   highlightColor: Colors.blue,
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(

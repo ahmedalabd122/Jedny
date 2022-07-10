@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:jedny/models/contactModel.dart';
@@ -13,16 +12,16 @@ class MissedPerson {
   String date;
   final String physicalState;
   final String mentalState;
-  final XFile image;
+  String image;
   Contact? contact;
   MissedPerson({
     this.name = 'ahmed',
     this.age = 23,
     this.location = 'Tanta',
-     this.date='',
+    this.date = '',
     this.physicalState = 'good',
     this.mentalState = 'good',
-    required this.image,
-     this.contact,
+    this.image = '',
+    this.contact,
   });
 }

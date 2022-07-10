@@ -58,11 +58,11 @@ class _FoundSplashState extends State<FoundSplash> {
                           color: Colors.blueAccent,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 260,
                         child: Text(
                           details[index],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
@@ -90,16 +90,15 @@ class _FoundSplashState extends State<FoundSplash> {
                                   .then((value) {
                                 _xFile = value;
                               });
-                              print(_xFile?.path);
+                              //print(_xFile?.path);
                               if (_xFile != null) {
-                                setState(() {
-                                  //_image = File(_xFile!.path);
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/missed_form',
-                                    arguments: _xFile,
-                                  );
-                                });
+                                setState(
+                                  () {
+                                    Navigator.popAndPushNamed(
+                                        context, '/missed_form',
+                                        arguments: _xFile);
+                                  },
+                                );
                               }
                             },
                             child: const Text(
@@ -134,7 +133,7 @@ class _FoundSplashState extends State<FoundSplash> {
                 onPressed: () {
                   _controller.animateToPage(
                     2,
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.easeInOutQuint,
                   );
                 },
@@ -163,7 +162,7 @@ class _FoundSplashState extends State<FoundSplash> {
                 ),
                 onPressed: () {
                   _controller.nextPage(
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.easeInOutQuint,
                   );
                 },

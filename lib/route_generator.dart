@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jedny/models/foundPersonModel.dart';
 import 'package:jedny/models/matchedModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
 import 'package:jedny/pages/foundPages/foundForm.dart';
@@ -9,7 +10,7 @@ import 'package:jedny/pages/home_page.dart';
 import 'package:jedny/pages/img_picker.dart';
 import 'package:jedny/pages/missedPages/missedForm.dart';
 import 'package:jedny/pages/missedPages/missed_contacts.dart';
-import 'package:jedny/pages/missedPages/splash.dart';
+import 'package:jedny/pages/missedPages/missedSplash.dart';
 import 'package:jedny/pages/success_page.dart';
 
 class RouteGenerator {
@@ -22,7 +23,7 @@ class RouteGenerator {
 
       case '/found_splash':
         return MaterialPageRoute(builder: (_) => FoundSplash());
-      case '/splash':
+      case '/missed_splash':
         return MaterialPageRoute(builder: (_) => MissedSplash());
       case '/missed_contact':
         if (args is MissedPerson) {
@@ -49,7 +50,15 @@ class RouteGenerator {
           return _errorRoute();
         }
       case '/found_contact':
-        return MaterialPageRoute(builder: (_) => FoundContact());
+        if (args is FoundPerson) {
+          return MaterialPageRoute(
+            builder: (_) => FoundContact(
+              foundPerson: args,
+            ),
+          );
+        } else {
+          return _errorRoute();
+        }
       // case '/matched':
       //   if (args is MatchedModel) {
       //     return MaterialPageRoute(

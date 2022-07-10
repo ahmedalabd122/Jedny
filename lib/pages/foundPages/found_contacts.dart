@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
-import '../../widgets/jedny_textfield.dart';
+import 'package:jedny/models/foundPersonModel.dart';
+import 'package:jedny/pages/request.dart';
+import 'package:jedny/widgets/jedny_textfield.dart';
+import 'dart:typed_data';
+import 'dart:io' as Io;
 
 class FoundContact extends StatefulWidget {
-  const FoundContact({Key? key}) : super(key: key);
-
+  FoundContact({Key? key, required this.foundPerson}) : super(key: key);
+  FoundPerson foundPerson;
   @override
   State<FoundContact> createState() => _FoundContactState();
 }
 
 class _FoundContactState extends State<FoundContact> {
   final formKey = GlobalKey<FormState>();
+  late bool accepted;
+  late String response;
   TextEditingController contactNameController = TextEditingController();
   TextEditingController contactNumberController = TextEditingController();
+  register() async {
+    widget.foundPerson.contact?.name = contactNameController.text;
+    widget.foundPerson.contact?.phone = contactNumberController.text;
+
+    Request request = Request(missed: false);
+    await request.makeCheckIn(person: widget.foundPerson);
+    accepted = request.accepted;
+    if (accepted == false) {
+      response = request.errorResponse.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(),
         centerTitle: true,
         actions: [
           IconButton(
@@ -40,7 +59,7 @@ class _FoundContactState extends State<FoundContact> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   width: 300,
                   child: const Text(
                     'نقوم باعلامك عبر اشعارات التطبيق وعبر رقم الهاتف الذي تدخله عند وجود أي معلومات أو تحديثات جديدة عن الشخص المفقود',
@@ -51,7 +70,7 @@ class _FoundContactState extends State<FoundContact> {
                     textAlign: TextAlign.right,
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.info_outline,
                   size: 36.0,
                   color: Colors.black54,
@@ -68,7 +87,7 @@ class _FoundContactState extends State<FoundContact> {
               ),
             ),
             JednyTextField(
-              controller: contactNameController,
+              controller: contactNumberController,
               hint_value: 'رقم الهاتف',
               icon: const Icon(
                 Icons.phone,
@@ -83,14 +102,24 @@ class _FoundContactState extends State<FoundContact> {
                 child: const Text('تأكيد البلاغ'),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    // If the form is valid, display a snackbar. In the real world,
-                    // you'd often call a server or save the information in a database.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
+                    setState(() async {
+                      await register();
+                      if (accepted) {
+                        Navigator.popAndPushNamed(context, '/success');
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/success', (Route<dynamic> route) => false,
+                            arguments: accepted);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Error:  $response',
+                            ),
+                          ),
+                        );
+                      }
+                    });
                   }
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/success', (Route<dynamic> route) => false);
                 },
               ),
             ),

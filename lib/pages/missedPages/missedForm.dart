@@ -1,12 +1,12 @@
-import 'dart:ui';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:jedny/models/contactModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:jedny/theme.dart';
 import 'package:jedny/widgets/datePicker.dart';
 import 'package:jedny/widgets/jedny_textfield.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'dart:io' as Io;
 
 class MissedForm extends StatefulWidget {
   MissedForm({Key? key, required this.missed_image}) : super(key: key);
@@ -25,11 +25,18 @@ class _MissedFormState extends State<MissedForm> {
   TextEditingController dateController = TextEditingController();
   TextEditingController phyiscalController = TextEditingController();
   TextEditingController mentalController = TextEditingController();
-  late MissedPerson missedPerson;
-  _register() {
+  MissedPerson missedPerson = MissedPerson();
+
+  _register() async {
+    Io.File imageFile = Io.File(widget.missed_image.path);
+    Uint8List imagebytes = await imageFile.readAsBytes();
+    String base64Encode =
+        Uri.dataFromBytes(imagebytes, mimeType: 'image/jpeg').toString();
+    missedPerson.image = base64Encode;
+
     missedPerson = MissedPerson(
       date: dateController.text,
-      image: widget.missed_image,
+      image: base64Encode,
       name: nameController.text,
       age: int.parse(ageController.text),
       location: locationController.text,
@@ -43,39 +50,75 @@ class _MissedFormState extends State<MissedForm> {
     );
   }
 
-  // Future _selectDate() async {
-  //   DateTime? picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: new DateTime.now(),
-  //       firstDate: new DateTime(2016),
-  //       lastDate: new DateTime(2019));
-  //   if (picked != null) setState(() => _value = picked.toString());
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.popAndPushNamed(context, '/home'),
           ),
           centerTitle: true,
-          title: Transform(
-            transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-            child: const Text(
-              "بيانات الشخص المفقود",
-              style: TextStyle(),
-            ),
+          title: const Text(
+            "بيانات الشخص المفقود",
+            style: TextStyle(),
           ),
         ),
         body: Form(
           key: formKey,
           child: ListView(
             children: [
-              Image.file(File(widget.missed_image.path)),
+              Stack(
+                alignment: Alignment.bottomLeft,
+                children: [
+                  Image.file(
+                    Io.File(
+                      widget.missed_image.path,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 125,
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: secondaryColor,
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.photo_camera_rounded,
+                              size: 20,
+                            ),
+                            color: Colors.white,
+                            onPressed: () async {
+                              await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery)
+                                  .then(
+                                (value) {
+                                  widget.missed_image = value!;
+                                },
+                              );
+                              setState(() {});
+                            },
+                          ),
+                          const Text(
+                            'اختر صورة اخرى',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: 'NotoKufiArabic',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               JednyTextField(
                 controller: nameController,
                 hint_value: 'اسم الشخص المفقود',
@@ -128,19 +171,11 @@ class _MissedFormState extends State<MissedForm> {
                 child: ElevatedButton(
                   child: const Text('متابعة'),
                   onPressed: () {
-                    /* if (formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    } */
                     if (formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
                       );
                       _register();
-                      //_image = File(_xFile!.path);
                       Navigator.pushNamed(context, '/missed_contact',
                           arguments: missedPerson);
                     }
@@ -152,41 +187,3 @@ class _MissedFormState extends State<MissedForm> {
         ));
   }
 }
-/*
-Request().makeCheckIn(
-                        name: 'ahmed alabd',
-                        age: '23',
-                        location: 'tanta',
-                        physicalStatus: 'tired boss',
-                        mentalStatus: 'mad',
-                        image: XFile("${widget.missed_image}"),
-                      );
-*/
-
-/**
- * TextFormField(
-    decoration: new InputDecoration(hintText: 'DOB'),
-    maxLength: 10,
-    validator: validateDob,
-    onSaved: (String val) {
-        strDob = val;
-    },
-    onTap: (){
-        // Below line stops keyboard from appearing
-        FocusScope.of(context).requestFocus(new FocusNode());
-
-        // Show Date Picker Here
-
-      },
-),
-
-Future _selectDate() async {
-    DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(2016),
-        lastDate: new DateTime(2019)
-    );
-    if(picked != null) setState(() => _value = picked.toString());
-}
- */

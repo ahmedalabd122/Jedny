@@ -10,6 +10,8 @@ import 'pages/home_page.dart';
 import 'pages/success_page.dart';
 import 'route_generator.dart';
 
+bool foundSplashed = false;
+bool missedSplashed = false;
 void main() {
   runApp(MyApp());
 }
@@ -22,6 +24,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

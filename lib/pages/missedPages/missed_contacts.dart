@@ -1,15 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:jedny/models/contactModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
 import 'package:jedny/pages/request.dart';
 import 'package:jedny/widgets/jedny_textfield.dart';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:io' as Io;
-import 'package:path_provider/path_provider.dart';
 
 class MissedContact extends StatefulWidget {
   MissedContact({Key? key, required this.missedPerson}) : super(key: key);
@@ -30,21 +24,10 @@ class _MissedContactState extends State<MissedContact> {
     widget.missedPerson.contact?.phone = contactNumberController.text;
     widget.missedPerson.contact?.relationship = contactRelationController.text;
 
-    Io.File imageFile = Io.File(widget.missedPerson.image.path);
-    Uint8List imagebytes = await widget.missedPerson.image.readAsBytes();
-    String base64Encode =
-        Uri.dataFromBytes(imagebytes, mimeType: 'image/jpeg').toString();
 
-    Request request = Request();
+    Request request = Request(missed: true);
     await request.makeCheckIn(
-      name: widget.missedPerson.name,
-      age: widget.missedPerson.age,
-      location: widget.missedPerson.location,
-      physicalStatus: widget.missedPerson.physicalState,
-      mentalStatus: widget.missedPerson.mentalState,
-      image: base64Encode,
-      contact: widget.missedPerson.contact!,
-      date: widget.missedPerson.date,
+      person: widget.missedPerson,
     );
     accepted = request.accepted;
     if (accepted == false) {
@@ -81,7 +64,7 @@ class _MissedContactState extends State<MissedContact> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   width: 300,
                   child: const Text(
                     'نقوم باعلامك عبر اشعارات التطبيق وعبر رقم الهاتف الذي تدخله عند وجود أي معلومات أو تحديثات جديدة عن الشخص المفقود',
@@ -126,7 +109,6 @@ class _MissedContactState extends State<MissedContact> {
                 color: Colors.black54,
               ),
             ),
-            Text('${base64Encode}'),
             Container(
               height: 50,
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),

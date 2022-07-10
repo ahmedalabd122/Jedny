@@ -35,7 +35,6 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
                 print(_xFile?.path);
                 if (_xFile != null) {
                   setState(() {
-                    //_image = File(_xFile!.path);
                   });
                 }
               },

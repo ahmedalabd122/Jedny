@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:jedny/main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,8 +51,20 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(5)),
                         color: const Color(0xFFFFFFFF),
                         textColor: Color(0xff3030D0),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/splash');
+                        onPressed: () async {
+                          if (missedSplashed) {
+                            XFile? _xFile;
+                            await ImagePicker()
+                                .pickImage(source: ImageSource.gallery)
+                                .then((value) {
+                              _xFile = value;
+                            });
+                            Navigator.pushNamed(context, '/missed_form',
+                                arguments: _xFile);
+                          } else {
+                            Navigator.pushNamed(context, '/missed_splash');
+                            missedSplashed = true;
+                          }
                         },
                       ),
                     ),
@@ -64,14 +78,26 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: const Text(
                           'وجدت شخصا تائه؟',
-                          style: const TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 18.0),
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                         color: const Color(0xff1BD483),
                         textColor: const Color(0xFFFDFDFD),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/splash');
+                        onPressed: () async {
+                          if (foundSplashed) {
+                            XFile? _xFile;
+                            await ImagePicker()
+                                .pickImage(source: ImageSource.gallery)
+                                .then((value) {
+                              _xFile = value;
+                            });
+                            Navigator.pushNamed(context, '/found_form',
+                                arguments: _xFile);
+                          } else {
+                            Navigator.pushNamed(context, '/found_splash');
+                            foundSplashed = true;
+                          }
                         },
                       ),
                     ),

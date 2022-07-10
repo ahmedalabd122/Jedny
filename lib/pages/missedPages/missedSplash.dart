@@ -16,7 +16,7 @@ class _MissedSplashState extends State<MissedSplash> {
   File? _image;
   XFile? _xFile;
   final _picker = ImagePicker();
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
   int _currentPage = 0;
   List images = ["tip_1.png", "tip_2.png", "tip_3.png"];
   List headLines = [
@@ -47,7 +47,7 @@ class _MissedSplashState extends State<MissedSplash> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 200),
+                      const SizedBox(height: 200),
                       Column(
                         children: [
                           Image(
@@ -83,7 +83,7 @@ class _MissedSplashState extends State<MissedSplash> {
                                   color: secondaryColor),
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                     fontFamily: 'NotoKufiArabic',
                                   ),
                                 ),
@@ -93,16 +93,15 @@ class _MissedSplashState extends State<MissedSplash> {
                                       .then((value) {
                                     _xFile = value;
                                   });
-                                  print(_xFile?.path);
+                                  //print(_xFile?.path);
                                   if (_xFile != null) {
-                                    setState(() {
-                                      //_image = File(_xFile!.path);
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/missed_form',
-                                        arguments: _xFile,
-                                      );
-                                    });
+                                    setState(
+                                      () {
+                                        Navigator.popAndPushNamed(
+                                            context, '/missed_form',
+                                            arguments: _xFile);
+                                      },
+                                    );
                                   }
                                 },
                                 child: const Text(
@@ -133,11 +132,11 @@ class _MissedSplashState extends State<MissedSplash> {
                     onPressed: () {
                       _controller.animateToPage(
                         2,
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOutQuint,
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'تخطي',
                       style: TextStyle(
                           fontSize: 20,
@@ -149,15 +148,16 @@ class _MissedSplashState extends State<MissedSplash> {
                 Row(
                   children: List.generate(3, (indexSlider) {
                     return Container(
-                        margin: const EdgeInsets.only(right: 1),
-                        width: indexSlider == _currentPage ? 25 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: indexSlider == _currentPage
-                              ? secondaryColor
-                              : secondaryColor.withOpacity(0.3),
-                        ));
+                      margin: const EdgeInsets.only(right: 1),
+                      width: indexSlider == _currentPage ? 25 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: indexSlider == _currentPage
+                            ? secondaryColor
+                            : secondaryColor.withOpacity(0.3),
+                      ),
+                    );
                   }),
                 ),
                 Container(
@@ -171,12 +171,12 @@ class _MissedSplashState extends State<MissedSplash> {
                     ),
                     onPressed: () {
                       _controller.nextPage(
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOutQuint,
                       );
                     },
                     child: Row(
-                      children: [
+                      children: const [
                         Text(
                           'التالي',
                           style: TextStyle(

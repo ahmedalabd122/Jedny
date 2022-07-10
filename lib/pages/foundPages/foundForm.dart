@@ -1,9 +1,12 @@
-import 'dart:ui';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:jedny/models/contactModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:jedny/theme.dart';
+import 'package:jedny/widgets/datePicker.dart';
 import 'package:jedny/widgets/jedny_textfield.dart';
+import 'dart:io' as Io;
 
 class FoundForm extends StatefulWidget {
   FoundForm({Key? key, required this.found_image}) : super(key: key);
@@ -14,127 +17,174 @@ class FoundForm extends StatefulWidget {
 
 class _FoundFormState extends State<FoundForm> {
   final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<FormState>();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController phyiscalController = TextEditingController();
   TextEditingController mentalController = TextEditingController();
-  late MissedPerson missedPerson;
+  
+  MissedPerson missedPerson = MissedPerson();
 
-  late XFile image = widget.found_image;
-  _register() {
+  _register() async {
+    Io.File imageFile = Io.File(widget.found_image.path);
+    Uint8List imagebytes = await imageFile.readAsBytes();
+    String base64Encode =
+        Uri.dataFromBytes(imagebytes, mimeType: 'image/jpeg').toString();
+    missedPerson.image = base64Encode;
+
     missedPerson = MissedPerson(
-      contact: Contact(),
-      date: DateTime.now().toString(),
-      image: widget.found_image,
+      date: dateController.text,
+      image: base64Encode,
       name: nameController.text,
       age: int.parse(ageController.text),
       location: locationController.text,
       physicalState: phyiscalController.text,
       mentalState: mentalController.text,
+      contact: Contact(
+        name: "ahmed",
+        phone: "0112619596464",
+        relationship: 'uncle',
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.arrow_forward, color: Colors.white),
-              onPressed: () => Navigator.of(context).pop(),
+      key: scaffoldKey,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        centerTitle: true,
+        title: const Text(
+          "بيانات الشخص المفقود",
+        ),
+      ),
+      body: Form(
+        key: formKey,
+        child: ListView(
+          children: [
+            Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                Image.file(
+                  Io.File(
+                    widget.found_image.path,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 125,
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: secondaryColor,
+                    ),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.photo_camera_rounded,
+                            size: 20,
+                          ),
+                          color: Colors.white,
+                          onPressed: () async {
+                            await ImagePicker()
+                                .pickImage(source: ImageSource.gallery)
+                                .then(
+                              (value) {
+                                widget.found_image = value!;
+                              },
+                            );
+                            setState(() {});
+                          },
+                        ),
+                        const Text(
+                          'اختر صورة اخرى',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontFamily: 'NotoKufiArabic',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            JednyTextField(
+              controller: nameController,
+              hint_value: 'اسم الشخص المفقود',
+              icon: const Icon(
+                Icons.person,
+                size: 36.0,
+                color: Colors.black54,
+              ),
+            ),
+            JednyTextField(
+              controller: ageController,
+              hint_value: 'السن عندما وجد',
+              icon: const Icon(
+                Icons.date_range,
+                size: 36.0,
+                color: Colors.black54,
+              ),
+            ),
+            JednyDatePicker(dateController: dateController),
+            JednyTextField(
+              controller: locationController,
+              hint_value: 'مكان الفقد',
+              icon: const Icon(
+                Icons.place,
+                size: 36.0,
+                color: Colors.black54,
+              ),
+            ),
+            JednyTextField(
+              controller: phyiscalController,
+              hint_value: 'الحالة البدنية',
+              icon: const Icon(
+                Icons.boy_sharp,
+                size: 36.0,
+                color: Colors.black54,
+              ),
+            ),
+            JednyTextField(
+              controller: mentalController,
+              hint_value: 'الحالة الذهنية',
+              icon: const Icon(
+                Icons.psychology_rounded,
+                size: 36.0,
+                color: Colors.black54,
+              ),
+            ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                child: const Text('متابعة'),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Processing Data')),
+                    );
+                    _register();
+                    Navigator.pushNamed(context, '/missed_contact',
+                        arguments: missedPerson);
+                  }
+                },
+              ),
             ),
           ],
-          title: Transform(
-            transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-            child: const Text(
-              "بيانات الشخص المفقود",
-              style: TextStyle(),
-            ),
-          ),
         ),
-        body: Form(
-          key: formKey,
-          child: ListView(
-            children: [
-              Image.asset(
-                "img/Layer-1.png",
-                height: 200,
-              ),
-              JednyTextField(
-                controller: nameController,
-                hint_value: 'اسم الشخص المفقود',
-                icon: const Icon(
-                  Icons.person,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              JednyTextField(
-                controller: ageController,
-                hint_value: 'السن عندما فقد',
-                icon: const Icon(
-                  Icons.date_range,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              JednyTextField(
-                controller: locationController,
-                hint_value: 'مكان الفقد',
-                icon: const Icon(
-                  Icons.place,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              JednyTextField(
-                controller: dateController,
-                hint_value: 'تاريخ الفقد',
-                icon: const Icon(
-                  Icons.calendar_today_outlined,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              JednyTextField(
-                controller: phyiscalController,
-                hint_value: 'الحالة البدنية',
-                icon: const Icon(
-                  Icons.boy_sharp,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              JednyTextField(
-                controller: mentalController,
-                hint_value: 'الحالة الذهنية',
-                icon: const Icon(
-                  Icons.psychology_rounded,
-                  size: 36.0,
-                  color: Colors.black54,
-                ),
-              ),
-              Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  child: const Text('متابعة'),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
