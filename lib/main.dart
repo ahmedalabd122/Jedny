@@ -5,7 +5,6 @@ import 'package:jedny/pages/foundPages/found_contacts.dart';
 import 'package:jedny/route_generator.dart';
 import 'package:jedny/services/dynamicLinkService.dart';
 import 'package:jedny/theme.dart';
-import 'pages/img_picker.dart';
 import 'pages/home_page.dart';
 import 'pages/success_page.dart';
 import 'route_generator.dart';

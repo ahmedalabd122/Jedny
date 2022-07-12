@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jedny/models/missedPersonModel.dart';
 import 'package:jedny/pages/request.dart';
 import 'package:jedny/widgets/jedny_textfield.dart';
-import 'dart:typed_data';
-import 'dart:io' as Io;
 
 class MissedContact extends StatefulWidget {
   MissedContact({Key? key, required this.missedPerson}) : super(key: key);
@@ -23,7 +21,6 @@ class _MissedContactState extends State<MissedContact> {
     widget.missedPerson.contact?.name = contactNameController.text;
     widget.missedPerson.contact?.phone = contactNumberController.text;
     widget.missedPerson.contact?.relationship = contactRelationController.text;
-
 
     Request request = Request(missed: true);
     await request.makeCheckIn(
@@ -125,9 +122,10 @@ class _MissedContactState extends State<MissedContact> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              content: Text(
-                            'Error:  $response',
-                          )),
+                            content: Text(
+                              'Error:  $response',
+                            ),
+                          ),
                         );
                       }
                     });
