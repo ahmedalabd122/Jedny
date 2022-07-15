@@ -36,17 +36,12 @@ class _MissedFormState extends State<MissedForm> {
 
     missedPerson = MissedPerson(
       date: dateController.text,
-      image: base64Encode,
+      image: missedPerson.image,
       name: nameController.text,
       age: int.parse(ageController.text),
       location: locationController.text,
       physicalState: phyiscalController.text,
       mentalState: mentalController.text,
-      contact: Contact(
-        name: "ahmed",
-        phone: "0112619596464",
-        relationship: 'uncle',
-      ),
     );
   }
 
@@ -55,6 +50,7 @@ class _MissedFormState extends State<MissedForm> {
     return Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
+          backgroundColor: primaryColor,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () => Navigator.popAndPushNamed(context, '/home'),
@@ -170,12 +166,12 @@ class _MissedFormState extends State<MissedForm> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                   child: const Text('متابعة'),
-                  onPressed: () {
+                  onPressed: () async {
                     if (formKey.currentState!.validate()) {
+                      await _register();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
                       );
-                      _register();
                       Navigator.pushNamed(context, '/missed_contact',
                           arguments: missedPerson);
                     }

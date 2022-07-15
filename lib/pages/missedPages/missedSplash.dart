@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'package:jedny/theme.dart';
 
 class MissedSplash extends StatefulWidget {
@@ -13,9 +12,7 @@ class MissedSplash extends StatefulWidget {
 }
 
 class _MissedSplashState extends State<MissedSplash> {
-  File? _image;
   XFile? _xFile;
-  final _picker = ImagePicker();
   final PageController _controller = PageController();
   int _currentPage = 0;
   List images = ["tip_1.png", "tip_2.png", "tip_3.png"];
@@ -33,7 +30,7 @@ class _MissedSplashState extends State<MissedSplash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             Expanded(
@@ -58,17 +55,17 @@ class _MissedSplashState extends State<MissedSplash> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: secondaryColor,
+                              color: primaryColor,
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 260,
                             child: Text(
                               details[index],
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                color: const Color(0x00000000).withOpacity(0.5),
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -85,6 +82,7 @@ class _MissedSplashState extends State<MissedSplash> {
                                 style: TextButton.styleFrom(
                                   textStyle: const TextStyle(
                                     fontFamily: 'NotoKufiArabic',
+                                    color: Colors.white,
                                   ),
                                 ),
                                 onPressed: () async {
@@ -136,12 +134,12 @@ class _MissedSplashState extends State<MissedSplash> {
                         curve: Curves.easeInOutQuint,
                       );
                     },
-                    child: const Text(
+                    child: Text(
                       'تخطي',
                       style: TextStyle(
                           fontSize: 20,
                           fontFamily: 'NotoKufiArabic',
-                          color: Colors.white),
+                          color: secondaryColor),
                     ),
                   ),
                 ),
@@ -176,17 +174,18 @@ class _MissedSplashState extends State<MissedSplash> {
                       );
                     },
                     child: Row(
-                      children: const [
+                      children: [
                         Text(
                           'التالي',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'NotoKufiArabic',
-                              color: Colors.white),
+                            fontSize: 20,
+                            fontFamily: 'NotoKufiArabic',
+                            color: primaryColor,
+                          ),
                         ),
                         Icon(
                           Icons.chevron_right,
-                          color: Colors.white,
+                          color: secondaryColor,
                           size: 36.0,
                         ),
                       ],

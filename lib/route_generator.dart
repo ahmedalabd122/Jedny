@@ -7,7 +7,8 @@ import 'package:jedny/pages/foundPages/foundForm.dart';
 import 'package:jedny/pages/foundPages/foundSplash.dart';
 import 'package:jedny/pages/foundPages/found_contacts.dart';
 import 'package:jedny/pages/home_page.dart';
-import 'package:jedny/pages/img_picker.dart';
+import 'package:jedny/pages/matched.dart';
+import 'package:jedny/services/img_picker.dart';
 import 'package:jedny/pages/missedPages/missedForm.dart';
 import 'package:jedny/pages/missedPages/missed_contacts.dart';
 import 'package:jedny/pages/missedPages/missedSplash.dart';
@@ -59,19 +60,19 @@ class RouteGenerator {
         } else {
           return _errorRoute();
         }
-      // case '/matched':
-      //   if (args is MatchedModel) {
-      //     return MaterialPageRoute(
-      //       builder: (_) => MatchedData(
-      //         matchedModel: args,
-      //       ),
-      //     );
-      //   } else {
-      //     return MaterialPageRoute(
-      //         builder: (_) => MatchedData(
-      //               matchedModel: MatchedModel(),
-      //             ));
-      //   }
+      case '/matched':
+        if (args is MatchedModel) {
+          return MaterialPageRoute(
+            builder: (_) => MatchedData(
+              matchedModel: args,
+            ),
+          );
+        } else {
+          return MaterialPageRoute(
+              builder: (_) => MatchedData(
+                    matchedModel: MatchedModel(),
+                  ));
+        }
       case '/missed_form':
         // Validation of correct data type
         if (args is XFile) {

@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:jedny/theme.dart';
+
 class FoundSplash extends StatefulWidget {
   const FoundSplash({Key? key}) : super(key: key);
 
@@ -27,7 +29,6 @@ class _FoundSplashState extends State<FoundSplash> {
     'سنقوم باشعارك عبر التطبيق ورقم الهاتف الذي تضيفه فور توافر أي معلومات جديدة عن الشخص الذي تبحث عنه.',
     'نقوم بالبحث في قاعدة بيانات ضخمة من الأشخاص المفقودين كما نتلقى بلاغات من متطوعين بشكل مستمر حتى نساعد في عودة المفقودين إلى ذويهم'
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +53,10 @@ class _FoundSplashState extends State<FoundSplash> {
                       ),
                       Text(
                         headLines[index],
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blueAccent,
+                          color: primaryColor,
                         ),
                       ),
                       SizedBox(
@@ -63,9 +64,9 @@ class _FoundSplashState extends State<FoundSplash> {
                         child: Text(
                           details[index],
                           style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black87),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -76,12 +77,12 @@ class _FoundSplashState extends State<FoundSplash> {
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: Colors.blue),
+                              color: secondaryColor),
                           child: TextButton(
                             style: TextButton.styleFrom(
                               textStyle: const TextStyle(
                                 fontFamily: 'NotoKufiArabic',
-                                backgroundColor: Colors.blue,
+                                color: Colors.white,
                               ),
                             ),
                             onPressed: () async {
@@ -95,7 +96,7 @@ class _FoundSplashState extends State<FoundSplash> {
                                 setState(
                                   () {
                                     Navigator.popAndPushNamed(
-                                        context, '/missed_form',
+                                        context, '/found_form',
                                         arguments: _xFile);
                                   },
                                 );
@@ -137,7 +138,13 @@ class _FoundSplashState extends State<FoundSplash> {
                     curve: Curves.easeInOutQuint,
                   );
                 },
-                child: const Text('تخطي'),
+                child: Text(
+                  'تخطي',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'NotoKufiArabic',
+                      color: secondaryColor),
+                ),
               ),
             ),
             Row(
@@ -167,11 +174,18 @@ class _FoundSplashState extends State<FoundSplash> {
                   );
                 },
                 child: Row(
-                  children: const [
-                    Text('التالي'),
+                  children: [
+                    Text(
+                      'التالي',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'NotoKufiArabic',
+                        color: primaryColor,
+                      ),
+                    ),
                     Icon(
                       Icons.chevron_right,
-                      color: Colors.blue,
+                      color: secondaryColor,
                       size: 36.0,
                     ),
                   ],

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:jedny/models/contactModel.dart';
+import 'package:jedny/models/foundPersonModel.dart';
 import 'package:jedny/models/missedPersonModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jedny/theme.dart';
@@ -25,29 +26,24 @@ class _FoundFormState extends State<FoundForm> {
   TextEditingController dateController = TextEditingController();
   TextEditingController phyiscalController = TextEditingController();
   TextEditingController mentalController = TextEditingController();
-  
-  MissedPerson missedPerson = MissedPerson();
+
+   FoundPerson foundPerson=FoundPerson();
 
   _register() async {
     Io.File imageFile = Io.File(widget.found_image.path);
     Uint8List imagebytes = await imageFile.readAsBytes();
     String base64Encode =
         Uri.dataFromBytes(imagebytes, mimeType: 'image/jpeg').toString();
-    missedPerson.image = base64Encode;
+    foundPerson.image = base64Encode;
 
-    missedPerson = MissedPerson(
+    foundPerson = FoundPerson(
       date: dateController.text,
-      image: base64Encode,
+      image: foundPerson.image,
       name: nameController.text,
       age: int.parse(ageController.text),
       location: locationController.text,
       physicalState: phyiscalController.text,
       mentalState: mentalController.text,
-      contact: Contact(
-        name: "ahmed",
-        phone: "0112619596464",
-        relationship: 'uncle',
-      ),
     );
   }
 
@@ -56,6 +52,7 @@ class _FoundFormState extends State<FoundForm> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        backgroundColor: primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -170,14 +167,14 @@ class _FoundFormState extends State<FoundForm> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: ElevatedButton(
                 child: const Text('متابعة'),
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Data')),
                     );
-                    _register();
-                    Navigator.pushNamed(context, '/missed_contact',
-                        arguments: missedPerson);
+                    await _register();
+                    Navigator.pushNamed(context, '/found_contact',
+                        arguments: foundPerson);
                   }
                 },
               ),

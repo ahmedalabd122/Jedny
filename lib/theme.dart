@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-Color primaryColor = Color(0xff3030D0);
-Color secondaryColor = Color(0xff1BD483);
+Color primaryColor = const Color(0xff3030D0);
+Color secondaryColor = const Color(0xff1BD483);
 
 ThemeData mainTheme = ThemeData(
   brightness: Brightness.light,
-  backgroundColor: Color(0xff3030D0),
+  backgroundColor: Colors.white,
   primaryColor: primaryColor,
   fontFamily: 'NotoKufiArabic',
   elevatedButtonTheme: ElevatedButtonThemeData(

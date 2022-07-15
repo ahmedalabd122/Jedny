@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:jedny/theme.dart';
 
 class SuccessPage extends StatefulWidget {
   const SuccessPage({Key? key}) : super(key: key);
@@ -23,12 +24,12 @@ class _SuccessPageState extends State<SuccessPage> {
               const Image(
                 image: AssetImage("img/Success.png"),
               ),
-              const Text(
+              Text(
                 'تم إضافة البلاغ بنجاح',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: primaryColor,
                 ),
               ),
               const SizedBox(
@@ -36,7 +37,7 @@ class _SuccessPageState extends State<SuccessPage> {
                 child: Text(
                   'سنقوم باعلامك فور توفر أي معلومات جديدة، نرجوا أن يلتأم الشمل في أقرب ما يمكن.',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.normal,
                   ),
                   textAlign: TextAlign.center,
@@ -45,7 +46,7 @@ class _SuccessPageState extends State<SuccessPage> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 width: 217,
                 child: FlatButton(
                   padding: const EdgeInsets.all(15),
@@ -56,7 +57,7 @@ class _SuccessPageState extends State<SuccessPage> {
                         'العودة إلى الرئيسية',
                         style: TextStyle(
                           fontSize: 14.0,
-                          color: Colors.blue,
+                          color: Colors.white,
                         ),
                       ),
                       SizedBox(
@@ -65,15 +66,15 @@ class _SuccessPageState extends State<SuccessPage> {
                       Icon(
                         Icons.home,
                         size: 36.0,
-                        color: Colors.blue,
+                        color: Colors.white,
                       ),
                     ],
                   ),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
-                  color: const Color.fromARGB(55, 30, 136, 229),
+                  color: secondaryColor.withOpacity(0.8),
                   textColor: const Color.fromARGB(255, 255, 255, 255),
-                  highlightColor: Colors.blue,
+                  highlightColor: secondaryColor,
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(
                         context, "/home", (r) => false);

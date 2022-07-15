@@ -1,7 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:jedny/models/missedPersonModel.dart';
-import 'package:jedny/pages/request.dart';
+import 'package:jedny/services/missed_request.dart';
+import 'package:jedny/services/request.dart';
+import 'package:jedny/theme.dart';
 import 'package:jedny/widgets/jedny_textfield.dart';
+import 'dart:io' as Io;
 
 class MissedContact extends StatefulWidget {
   MissedContact({Key? key, required this.missedPerson}) : super(key: key);
@@ -17,18 +22,27 @@ class _MissedContactState extends State<MissedContact> {
   TextEditingController contactNameController = TextEditingController();
   TextEditingController contactNumberController = TextEditingController();
   TextEditingController contactRelationController = TextEditingController();
+  MissedRequest missedRequest = MissedRequest();
   register() async {
     widget.missedPerson.contact?.name = contactNameController.text;
     widget.missedPerson.contact?.phone = contactNumberController.text;
     widget.missedPerson.contact?.relationship = contactRelationController.text;
 
-    Request request = Request(missed: true);
-    await request.makeCheckIn(
-      person: widget.missedPerson,
+    await missedRequest.makeCheckIn(
+      name: widget.missedPerson.name,
+      age: widget.missedPerson.age,
+      location: widget.missedPerson.location,
+      physicalStatus: widget.missedPerson.physicalState,
+      mentalStatus: widget.missedPerson.mentalState,
+      image: widget.missedPerson.image,
+      date: widget.missedPerson.date,
+      contactName: contactNameController.text,
+      contactphone: contactNumberController.text,
+      contactRealation: contactRelationController.text,
     );
-    accepted = request.accepted;
+    accepted = missedRequest.getAccepted();
     if (accepted == false) {
-      response = request.errorResponse.toString();
+      response = missedRequest.getResponce();
     }
   }
 
@@ -36,6 +50,7 @@ class _MissedContactState extends State<MissedContact> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: primaryColor,
         leading: Container(),
         centerTitle: true,
         actions: [
@@ -111,10 +126,10 @@ class _MissedContactState extends State<MissedContact> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: ElevatedButton(
                 child: const Text('تأكيد البلاغ'),
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    setState(() async {
-                      await register();
+                    await register();
+                    setState(() {
                       if (accepted) {
                         Navigator.popAndPushNamed(context, '/success');
                         Navigator.of(context).pushNamedAndRemoveUntil(

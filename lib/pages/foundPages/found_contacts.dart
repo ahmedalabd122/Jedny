@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jedny/models/foundPersonModel.dart';
-import 'package:jedny/pages/request.dart';
+import 'package:jedny/services/found_request.dart';
+import 'package:jedny/services/request.dart';
+import 'package:jedny/theme.dart';
 import 'package:jedny/widgets/jedny_textfield.dart';
 import 'dart:typed_data';
 import 'dart:io' as Io;
@@ -22,11 +24,21 @@ class _FoundContactState extends State<FoundContact> {
     widget.foundPerson.contact?.name = contactNameController.text;
     widget.foundPerson.contact?.phone = contactNumberController.text;
 
-    Request request = Request(missed: false);
-    await request.makeCheckIn(person: widget.foundPerson);
-    accepted = request.accepted;
+    FoundRequest foundRequest = FoundRequest();
+    await foundRequest.makeCheckIn(
+      name: widget.foundPerson.name,
+      age: widget.foundPerson.age,
+      location: widget.foundPerson.location,
+      physicalStatus: widget.foundPerson.physicalState,
+      mentalStatus: widget.foundPerson.mentalState,
+      image: widget.foundPerson.image,
+      date: widget.foundPerson.date,
+      contactName: contactNameController.text,
+      contactphone: contactNumberController.text,
+    );
+    accepted = foundRequest.getAccepted();
     if (accepted == false) {
-      response = request.errorResponse.toString();
+      response = foundRequest.getResponce();
     }
   }
 
@@ -34,6 +46,7 @@ class _FoundContactState extends State<FoundContact> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: primaryColor,
         leading: Container(),
         centerTitle: true,
         actions: [
@@ -100,10 +113,10 @@ class _FoundContactState extends State<FoundContact> {
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: ElevatedButton(
                 child: const Text('تأكيد البلاغ'),
-                onPressed: () {
+                onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    setState(() async {
-                      await register();
+                    await register();
+                    setState(() {
                       if (accepted) {
                         Navigator.popAndPushNamed(context, '/success');
                         Navigator.of(context).pushNamedAndRemoveUntil(
