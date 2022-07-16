@@ -152,7 +152,7 @@ class _FoundContactState extends State<FoundContact> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(15),
                                       child: Text(
-                                        '!!! Error:  $response !!!',
+                                        '!!! Error:  $response',
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.normal,
