@@ -27,7 +27,7 @@ class _FoundFormState extends State<FoundForm> {
   TextEditingController phyiscalController = TextEditingController();
   TextEditingController mentalController = TextEditingController();
 
-   FoundPerson foundPerson=FoundPerson();
+  FoundPerson foundPerson = FoundPerson();
 
   _register() async {
     Io.File imageFile = Io.File(widget.found_image.path);
@@ -76,41 +76,44 @@ class _FoundFormState extends State<FoundForm> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 125,
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: secondaryColor,
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.photo_camera_rounded,
-                            size: 20,
-                          ),
-                          color: Colors.white,
-                          onPressed: () async {
-                            await ImagePicker()
-                                .pickImage(source: ImageSource.gallery)
-                                .then(
-                              (value) {
-                                widget.found_image = value!;
-                              },
-                            );
-                            setState(() {});
-                          },
-                        ),
-                        const Text(
-                          'اختر صورة اخرى',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'NotoKufiArabic',
+                  child: GestureDetector(
+                    onTap: () async {
+                      await ImagePicker()
+                          .pickImage(source: ImageSource.gallery)
+                          .then(
+                        (value) {
+                          widget.found_image = value!;
+                        },
+                      );
+                      setState(() {});
+                    },
+                    child: Container(
+                      width: 125,
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: secondaryColor,
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.photo_camera_rounded,
+                              size: 20,
+                            ),
                             color: Colors.white,
+                            onPressed: () {},
                           ),
-                        ),
-                      ],
+                          const Text(
+                            'اختر صورة اخرى',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: 'NotoKufiArabic',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -169,9 +172,6 @@ class _FoundFormState extends State<FoundForm> {
                 child: const Text('متابعة'),
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
                     await _register();
                     Navigator.pushNamed(context, '/found_contact',
                         arguments: foundPerson);

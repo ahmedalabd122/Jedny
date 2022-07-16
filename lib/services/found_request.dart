@@ -10,7 +10,7 @@ import '../models/missedPersonModel.dart';
 import '../models/contactModel.dart';
 
 class FoundRequest {
-  String callResponse = '';
+  String callResponse = ' ';
   bool accepted = false;
   Future makeCheckIn({
     required String name,
@@ -43,9 +43,7 @@ class FoundRequest {
       },
     };
     try {
-      await dio
-          .post("https://gednie.herokuapp.com/found", data: jsonData)
-          .then(
+      await dio.post("https://gednie.herokuapp.com/found", data: jsonData).then(
         (value) {
           accepted = true;
           print(
@@ -57,7 +55,11 @@ class FoundRequest {
       print(e);
       print(e.error);
       print(e.response);
-      callResponse = e.error;
+      if (e.error != 'Http status error [503]') {
+        callResponse = e.response.toString();
+      } else {
+        callResponse = e.response.toString();
+      }
     }
   }
 
@@ -68,5 +70,4 @@ class FoundRequest {
   bool getAccepted() {
     return accepted;
   }
-
 }

@@ -131,6 +131,7 @@ class _FoundContactState extends State<FoundContact> {
                       },
                     );
                     await register();
+                    Navigator.of(context).pop();
                     setState(() {
                       if (accepted) {
                         Navigator.popAndPushNamed(context, '/success');
@@ -138,12 +139,33 @@ class _FoundContactState extends State<FoundContact> {
                             '/success', (Route<dynamic> route) => false,
                             arguments: accepted);
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Error:  $response',
-                            ),
-                          ),
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: Container(
+                                width: 300,
+                                height: 300,
+                                child: Center(
+                                  child: Card(
+                                    color: const Color(0xff1BD483),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: Text(
+                                        '!!! Error:  $response !!!',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          color: Color(0xff3030D0),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         );
                       }
                     });
