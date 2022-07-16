@@ -49,7 +49,7 @@ class _FoundSplashState extends State<FoundSplash> {
                   Column(
                     children: [
                       Image(
-                        image: AssetImage("img/" + images[index]),
+                        image: AssetImage("assets/img/" + images[index]),
                       ),
                       Text(
                         headLines[index],

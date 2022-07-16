@@ -7,6 +7,7 @@ import 'package:jedny/pages/foundPages/foundForm.dart';
 import 'package:jedny/pages/foundPages/foundSplash.dart';
 import 'package:jedny/pages/foundPages/found_contacts.dart';
 import 'package:jedny/pages/home_page.dart';
+import 'package:jedny/pages/loading_screen.dart';
 import 'package:jedny/pages/matched.dart';
 import 'package:jedny/services/img_picker.dart';
 import 'package:jedny/pages/missedPages/missedForm.dart';
@@ -19,6 +20,8 @@ class RouteGenerator {
     // Getting arguments passed in while calling Navigator.pushNamed
     final args = settings.arguments;
     switch (settings.name) {
+      case '/loading_screen':
+        return MaterialPageRoute(builder: (_) => LoadingScreen());
       case '/home':
         return MaterialPageRoute(builder: (_) => HomePage());
 

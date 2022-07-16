@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jedny/pages/loading_screen.dart';
 import 'package:jedny/route_generator.dart';
 import 'package:jedny/theme.dart';
 import 'route_generator.dart';
@@ -28,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Jedny',
       theme: mainTheme,
-      initialRoute: '/home',
+      home: LoadingScreen(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

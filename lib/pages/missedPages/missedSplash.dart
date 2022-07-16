@@ -48,7 +48,7 @@ class _MissedSplashState extends State<MissedSplash> {
                       Column(
                         children: [
                           Image(
-                            image: AssetImage("img/" + images[index]),
+                            image: AssetImage("assets/img/" + images[index]),
                           ),
                           Text(
                             headLines[index],

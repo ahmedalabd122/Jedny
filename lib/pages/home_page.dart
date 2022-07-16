@@ -17,14 +17,13 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Color(0xff3030D0),
         body: Container(
-          //color: Colors.blue,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 const Spacer(flex: 4),
                 Image.asset(
-                  "img/Logo.png",
+                  "assets/img/Logo.png",
                   scale: 5,
                 ),
                 const SizedBox(

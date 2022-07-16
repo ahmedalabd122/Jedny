@@ -22,7 +22,7 @@ class _SuccessPageState extends State<SuccessPage> {
           Column(
             children: [
               const Image(
-                image: AssetImage("img/Success.png"),
+                image: AssetImage("assets/img/Success.png"),
               ),
               Text(
                 'تم إضافة البلاغ بنجاح',

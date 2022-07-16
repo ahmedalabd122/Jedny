@@ -7,6 +7,8 @@ import 'package:jedny/widgets/jedny_textfield.dart';
 import 'dart:typed_data';
 import 'dart:io' as Io;
 
+import 'package:lottie/lottie.dart';
+
 class FoundContact extends StatefulWidget {
   FoundContact({Key? key, required this.foundPerson}) : super(key: key);
   FoundPerson foundPerson;
@@ -115,6 +117,19 @@ class _FoundContactState extends State<FoundContact> {
                 child: const Text('تأكيد البلاغ'),
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Center(
+                          child: SizedBox(
+                            height: 200,
+                            width: 200,
+                            child: Lottie.asset('assets/lottie/icon.json',
+                                repeat: true, fit: BoxFit.fitHeight),
+                          ),
+                        );
+                      },
+                    );
                     await register();
                     setState(() {
                       if (accepted) {
